@@ -3,27 +3,6 @@ kind: pipeline
 name: default
 
 steps:
-  - name: gate-master
-    image: bdebyl/alpine-git
-    commands:
-      - git fetch origin +refs/heads/master
-      - git show-ref
-      - git diff --name-only HEAD~1..HEAD | grep 'Dockerfile|src' || exit 78
-    when:
-      branch:
-        - master
-
-  - name: gate-pr
-    image: bdebyl/alpine-git
-    commands:
-      - git fetch origin +refs/heads/master
-      - git show-ref
-      - git diff --name-only $(git merge-base refs/remotes/origin/master HEAD)..HEAD | grep 'Dockerfile|src' || exit 78
-    when:
-      branch:
-        exclude:
-          - master
-
   - name: publish
     image: plugins/docker
     settings:
@@ -37,6 +16,6 @@ steps:
         - master
 ---
 kind: signature
-hmac: c6f916c703c7add6514976544168f392fc592a1dc53cfd2ddfe3e8f23b216d39
+hmac: 3a04b3493d81a51a786c5c25e0480aba82e0af6ed0fc4ebb418d6a1e5b2d33c8
 
 ...
