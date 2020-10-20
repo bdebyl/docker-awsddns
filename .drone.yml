@@ -1,0 +1,42 @@
+---
+kind: pipeline
+name: default
+
+steps:
+  - name: gate-master
+    image: bdebyl/alpine-git
+    commands:
+      - git fetch origin +refs/heads/master
+      - git show-ref
+      - git diff --name-only HEAD~1..HEAD | grep Dockerfile || exit 78
+    when:
+      branch:
+        - master
+
+  - name: gate-pr
+    image: bdebyl/alpine-git
+    commands:
+      - git fetch origin +refs/heads/master
+      - git show-ref
+      - git diff --name-only $(git merge-base refs/remotes/origin/master HEAD)..HEAD | grep Dockerfile || exit 78
+    when:
+      branch:
+        exclude:
+          - master
+
+  - name: publish
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      repo: bdebyl/awsddns
+    when:
+      branch:
+        - master
+---
+kind: signature
+hmac: aaf60039439ef16622fb26ca8412fac6410e065f34b7bd29b1b6bd9637d9423c
+
+...
