@@ -8,7 +8,7 @@ steps:
     commands:
       - git fetch origin +refs/heads/master
       - git show-ref
-      - git diff --name-only HEAD~1..HEAD | grep Dockerfile || exit 78
+      - git diff --name-only HEAD~1..HEAD | grep 'Dockerfile|src' || exit 78
     when:
       branch:
         - master
@@ -18,7 +18,7 @@ steps:
     commands:
       - git fetch origin +refs/heads/master
       - git show-ref
-      - git diff --name-only $(git merge-base refs/remotes/origin/master HEAD)..HEAD | grep Dockerfile || exit 78
+      - git diff --name-only $(git merge-base refs/remotes/origin/master HEAD)..HEAD | grep 'Dockerfile|src' || exit 78
     when:
       branch:
         exclude:
@@ -37,6 +37,6 @@ steps:
         - master
 ---
 kind: signature
-hmac: aaf60039439ef16622fb26ca8412fac6410e065f34b7bd29b1b6bd9637d9423c
+hmac: c6f916c703c7add6514976544168f392fc592a1dc53cfd2ddfe3e8f23b216d39
 
 ...

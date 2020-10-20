@@ -68,7 +68,7 @@ else
 fi
 
 if [ -z "$test_dns_ans" ]; then
-  die 'ERROR: received bad ansewr from Route 53 (check aws config?)'
+  die 'ERROR: received bad answer from Route 53 (check aws config?)'
 fi
 
 tempfile="$(mktemp --suffix=.json)"
