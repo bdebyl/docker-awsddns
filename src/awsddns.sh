@@ -71,7 +71,9 @@ if [ -z "$test_dns_ans" ]; then
   die 'ERROR: received bad answer from Route 53 (check aws config?)'
 fi
 
-tempfile="$(mktemp --suffix=.json)"
+tempfile="$(mktemp)"
+mv "$tempfile" "$tempfile.json"
+tempfile="$tempfile.json"
 
 { update_json="$(cat)"; } <<EOF
 {
@@ -102,6 +104,7 @@ fi
 if [ "$checkip_ans" != "$test_dns_ans" ]; then
   printf 'Record out of date -- attempting update\n'
   if [ "$debug" ]; then
+    # Do nothing
     true
   else
     printf '%s' "$update_json" > "$tempfile"
