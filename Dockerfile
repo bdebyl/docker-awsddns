@@ -1,6 +1,5 @@
 FROM bdebyl/awscli
 MAINTAINER Bastian de Byl <bastian@bdebyl.net>
-ENTRYPOINT ["crond"]
 
 RUN apk --update add curl jq \
     && rm /var/cache/apk/*
@@ -8,3 +7,4 @@ RUN apk --update add curl jq \
 ADD src/awsddns.sh /etc/periodic/15min/awsddns
 
 CMD ["-f", "-d", "8"]
+ENTRYPOINT ["crond"]
