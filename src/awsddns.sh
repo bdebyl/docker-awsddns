@@ -25,6 +25,10 @@ if [ ! "$(command -v curl)" ]; then
   die 'curl not installed -- exiting'
 fi
 
+if [ -z "$AWS_ZONE_TTL"]; then
+  die 'AWS_ZONE_TTL environmental variable not set -- exiting'
+fi
+
 if [ -z "$AWS_ZONE_ID" ]; then
   die 'AWS_ZONE_ID environmental variable not set -- exiting'
 fi
@@ -84,7 +88,7 @@ tempfile="$tempfile.json"
       "ResourceRecordSet": {
         "Name": "$AWS_ZONE_HOSTNAME",
         "Type": "A",
-        "TTL": 3600,
+        "TTL": $AWS_ZONE_TTL,
         "ResourceRecords": [
           {
             "Value": "$checkip_ans"
